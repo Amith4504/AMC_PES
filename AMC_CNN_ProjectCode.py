@@ -20,8 +20,8 @@ from keras.optimizers import adam
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pickle,sys,keras # for unpickling
-
-
+import tkinter as tk
+root = tk.Tk()
 
 Xd = pickle.load(open("RML2016.10a_dict.pkl",'rb'),encoding='latin')
 snrs,mods = map(lambda j: sorted(list(set(map(lambda x: x[j], Xd.keys())))), [1,0])
@@ -150,6 +150,8 @@ def plot_confusion_matrix(cm, title='Confusion matrix', cmap=plt.cm.Blues, label
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
     
+    
+X_test.shape[0]    
 test_Y_hat = model.predict(X_test, batch_size=batch_size)
 conf = np.zeros([len(classes),len(classes)])
 confnorm = np.zeros([len(classes),len(classes)])
@@ -160,15 +162,22 @@ for i in range(0,X_test.shape[0]):
 for i in range(0,len(classes)):
     confnorm[i,:] = conf[i,:] / np.sum(conf[i,:])
 plot_confusion_matrix(confnorm, labels=classes) 
- 
+plt.savefig('confusion_matrix_all_SNR',dpi=400)
+cor = np.sum(np.diag(conf))
+ncor = np.sum(conf) - cor
+acc_all = 1.0*cor/(cor+ncor)
 
 acc = {}
-for snr in snrs:
 
-    # extract classes @ SNR
-    test_SNRs = map(lambda x: lbl[x][1], test_idx)
-    test_X_i = X_test[np.where(np.array(test_SNRs)==snr)]
-    test_Y_i = Y_test[np.where(np.array(test_SNRs)==snr)]    
+
+test_SNRs=[]
+for i in test_idx:
+    test_SNRs = np.append(test_SNRs,lbl[i][1])
+
+for snr in snrs:
+    #test_SNRs = map(lambda x: lbl[x][1], test_idx)
+    test_X_i = X_test[np.where(np.array(test_SNRs)==16)]
+    test_Y_i = Y_test[np.where(np.array(test_SNRs)==16)]    
 
     # estimate classes
     test_Y_i_hat = model.predict(test_X_i)
@@ -181,18 +190,24 @@ for snr in snrs:
     for i in range(0,len(classes)):
         confnorm[i,:] = conf[i,:] / np.sum(conf[i,:])
     plt.figure()
-    plot_confusion_matrix(confnorm, labels=classes, title="ConvNet Confusion Matrix (SNR=%d)"%(snr))
-    plt.savefig(snr,dpi=400)
+    plot_confusion_matrix(confnorm, labels=classes, title="ConvNet Confusion")
+    plt.savefig("16SNR",dpi=400)
     cor = np.sum(np.diag(conf))
     ncor = np.sum(conf) - cor
-    #print "Overall Accuracy: ", cor / (cor+ncor)
-    acc[snr] = 1.0*cor/(cor+ncor)   
+    acc[snr] = 1.0*cor/(cor+ncor)
 
-print acc
-fd = open('results_cnn2_d0.5.dat','wb')
-cPickle.dump( ("CNN2", 0.5, acc) , fd )
+#mapped=map(lambda x: acc[x], snrs)
+#acc_list = list(acc.values())
 
-plt.plot(snrs, map(lambda x: acc[x], snrs))
+lists = sorted(acc.items()) # sorted by key, return a list of tuples
+
+x, y = zip(*lists)   
+plt.plot(x,y)
 plt.xlabel("Signal to Noise Ratio")
 plt.ylabel("Classification Accuracy")
-plt.title("CNN2 Classification Accuracy on RadioML 2016.10 Alpha")
+plt.grid(True)
+plt.title("CNN on RadioML 2016.10 Alpha")
+plt.savefig('Accuracy_SNR',dpi=400)
+
+fd = open('results_cnn2_d0.5.dat','wb')
+cPickle.dump( ("CNN2", 0.5, acc) , fd )
