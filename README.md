@@ -6,6 +6,9 @@ The network consists of 2 Convolutional Feature Detection layers . The first lay
 
 ![Screenshot from 2021-11-26 23-51-49](https://user-images.githubusercontent.com/21309793/143619257-cec6b663-0912-4584-a295-6baa668e9dd0.png)
 
+# Training Performance
+![Training Performance](https://user-images.githubusercontent.com/21309793/143676686-8fa7cc08-cff7-4acc-bbd4-dfb34ebd72da.png)
+
 
 # Confusion Matrices for different Signal to Noise Ratios
 ## 16 SNR
