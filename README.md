@@ -11,21 +11,21 @@ The network consists of 2 Convolutional Feature Detection layers . The first lay
 
 
 # Confusion Matrices for different Signal to Noise Ratios
-## 16 SNR
+## 16 db SNR
 ![16snr](https://user-images.githubusercontent.com/21309793/143619307-6aa1864e-f605-4732-8859-ee08e797f0e8.png)
 
-## 12 SNR
+## 12 db SNR
 
 ![12snr](https://user-images.githubusercontent.com/21309793/143619369-e46c5f2e-28ba-4049-84ab-5dd4c0e4fe8a.png)
 
-## 8 SNR
+## 8 db SNR
 ![8snr](https://user-images.githubusercontent.com/21309793/143619410-c7655d85-e2a2-4df2-a700-6a626cfe1a0f.png)
 
-## -10 SNR
+## -10 db SNR
 ![-10snr](https://user-images.githubusercontent.com/21309793/143619490-7c6826d9-c700-446d-a1fc-ee1f6c88e243.png)
 
 
-## -18 SNR
+## -18 db SNR
 
 ![-18snr](https://user-images.githubusercontent.com/21309793/143619467-2d076e82-b2ae-4afc-9aaa-aff1ac3db96f.png)
 
